@@ -2,7 +2,7 @@
   "name": "Galactic Institute of Technology",
   "short_name": "GIT",
   "description": "Ex Fabris, Pro Fabris — From Builders, For Builders",
-  "start_url": "/galactic-institute-of-technology.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0a1628",
   "theme_color": "#0a1628",

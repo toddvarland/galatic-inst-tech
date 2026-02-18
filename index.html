@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a1628">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GIT">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>Galactic Institute of Technology</title>
+  <style>
+    :root {
+      --primary: #0a1628;
+      --accent: #00c2ff;
+      --accent-dark: #0099cc;
+      --gold: #f0c040;
+      --light-bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-light: #555;
+      --border: #dde1e6;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--white);
+    }
+
+    a { color: var(--accent-dark); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent); }
+
+    /* ── Top Bar ── */
+    .top-bar {
+      background: var(--primary);
+      color: #aab;
+      font-size: 0.8rem;
+      padding: 6px 0;
+    }
+    .top-bar .container {
+      display: flex; justify-content: flex-end; gap: 20px;
+    }
+    .top-bar a { color: #ccd; }
+    .top-bar a:hover { color: var(--accent); }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--white);
+      border-bottom: 3px solid var(--accent);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0;
+    }
+    .logo {
+      font-size: 1.4rem; font-weight: 800; color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 28px; }
+    nav ul li a {
+      color: var(--text); font-weight: 600; font-size: 0.95rem;
+      padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    nav ul li a:hover { color: var(--accent-dark); border-bottom-color: var(--accent); }
+
+    /* ── Container ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #162544 50%, #0d3b66 100%);
+      color: var(--white);
+      padding: 100px 0 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(0,194,255,0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 20%, rgba(240,192,64,0.05) 0%, transparent 50%);
+    }
+    .hero h1 {
+      font-size: 3.2rem; font-weight: 800; margin-bottom: 12px;
+      position: relative;
+    }
+    .hero .tagline {
+      font-size: 1.35rem; color: var(--accent); font-weight: 600;
+      margin-bottom: 20px; position: relative;
+    }
+    .hero p {
+      max-width: 750px; margin: 0 auto 30px; font-size: 1.1rem;
+      color: #c8d0dc; line-height: 1.7; position: relative;
+    }
+    .hero .btn {
+      display: inline-block; padding: 14px 36px;
+      background: var(--accent); color: var(--primary);
+      font-weight: 700; font-size: 1rem; border-radius: 4px;
+      transition: background 0.2s; position: relative;
+    }
+    .hero .btn:hover { background: var(--gold); color: var(--primary); }
+
+    /* ── Stats ── */
+    .stats {
+      background: var(--primary);
+      padding: 50px 0;
+      color: var(--white);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+      text-align: center;
+    }
+    .stat-item .number {
+      font-size: 2.4rem; font-weight: 800; color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .stat-item .label { font-size: 0.9rem; color: #aab8c8; }
+
+    /* ── Section ── */
+    section { padding: 70px 0; }
+    section:nth-child(even) { background: var(--light-bg); }
+
+    .section-header {
+      text-align: center; margin-bottom: 50px;
+    }
+    .section-header h2 {
+      font-size: 2.2rem; font-weight: 800; color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .section-header p {
+      font-size: 1.1rem; color: var(--text-light); max-width: 650px; margin: 0 auto;
+    }
+
+    /* ── News ── */
+    .news-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px;
+    }
+    .news-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 28px; transition: box-shadow 0.2s;
+    }
+    .news-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .news-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--primary); }
+    .news-card p { font-size: 0.92rem; color: var(--text-light); }
+
+    /* ── Academics ── */
+    .academics-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      margin-bottom: 40px;
+    }
+    .academic-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 30px; text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .academic-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .academic-card h3 { font-size: 1.15rem; margin-bottom: 10px; color: var(--primary); }
+    .academic-card p { font-size: 0.9rem; color: var(--text-light); }
+
+    .schools-table {
+      width: 100%; border-collapse: collapse; margin-top: 10px;
+    }
+    .schools-table th {
+      background: var(--primary); color: var(--white); padding: 12px 16px;
+      text-align: left; font-size: 0.9rem;
+    }
+    .schools-table td {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem;
+    }
+    .schools-table tr:hover { background: #e8f4fd; }
+    .schools-table td:first-child { font-weight: 600; color: var(--accent-dark); white-space: nowrap; }
+
+    /* ── Research ── */
+    .research-stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+      margin-bottom: 40px; text-align: center;
+    }
+    .research-stat {
+      background: var(--primary); color: var(--white);
+      padding: 28px; border-radius: 8px;
+    }
+    .research-stat .number { font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .research-stat .label { font-size: 0.85rem; color: #aab8c8; margin-top: 4px; }
+
+    .labs-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+    .lab-card {
+      background: var(--card-bg); border-left: 4px solid var(--accent);
+      padding: 24px; border-radius: 0 8px 8px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .lab-card h4 { font-size: 1rem; color: var(--primary); margin-bottom: 6px; }
+    .lab-card p { font-size: 0.88rem; color: var(--text-light); }
+
+    /* ── Innovation ── */
+    .innovation-stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+      margin-bottom: 30px; text-align: center;
+    }
+    .innovation-stat {
+      padding: 24px; background: linear-gradient(135deg, var(--primary), #162544);
+      color: var(--white); border-radius: 8px;
+    }
+    .innovation-stat .number { font-size: 2rem; font-weight: 800; color: var(--gold); }
+    .innovation-stat .label { font-size: 0.85rem; color: #bbb; margin-top: 4px; }
+
+    /* ── Admission ── */
+    .admission-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    }
+    .admission-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 30px; text-align: center;
+    }
+    .admission-card h3 { color: var(--primary); margin-bottom: 10px; }
+    .admission-card p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 16px; }
+    .admission-card .btn-outline {
+      display: inline-block; padding: 10px 24px;
+      border: 2px solid var(--accent); color: var(--accent-dark);
+      font-weight: 600; border-radius: 4px; transition: all 0.2s;
+    }
+    .admission-card .btn-outline:hover {
+      background: var(--accent); color: var(--white);
+    }
+
+    /* ── Events ── */
+    .events-table {
+      width: 100%; border-collapse: collapse;
+    }
+    .events-table th {
+      background: var(--primary); color: var(--white);
+      padding: 12px 16px; text-align: left; font-size: 0.9rem;
+    }
+    .events-table td {
+      padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 0.92rem;
+    }
+    .events-table td:first-child {
+      font-weight: 700; color: var(--accent-dark); white-space: nowrap; width: 90px;
+    }
+    .events-table tr:hover { background: #e8f4fd; }
+
+    /* ── Quick Links ── */
+    .quick-links {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;
+    }
+    .ql-group h4 {
+      font-size: 0.95rem; color: var(--primary); margin-bottom: 10px;
+      padding-bottom: 6px; border-bottom: 2px solid var(--accent);
+    }
+    .ql-group ul { list-style: none; }
+    .ql-group ul li { margin-bottom: 6px; }
+    .ql-group ul li a { font-size: 0.9rem; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--primary); color: #8899aa; padding: 50px 0 30px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+      margin-bottom: 30px;
+    }
+    footer h4 { color: var(--white); margin-bottom: 12px; font-size: 1rem; }
+    footer p, footer a { font-size: 0.88rem; }
+    footer a { color: #8899aa; }
+    footer a:hover { color: var(--accent); }
+    .footer-social { display: flex; gap: 16px; margin-top: 14px; }
+    .footer-social a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border: 1px solid #334;
+      border-radius: 50%; color: #8899aa; font-size: 0.8rem; font-weight: 700;
+      transition: all 0.2s;
+    }
+    .footer-social a:hover { border-color: var(--accent); color: var(--accent); }
+    .footer-bottom {
+      border-top: 1px solid #1e2d44; padding-top: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a { font-size: 0.82rem; }
+
+    /* ── Responsive ── */
+
+    /* Hamburger button (hidden on desktop) */
+    .menu-toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      font-size: 1.6rem; color: var(--primary); padding: 4px 8px; line-height: 1;
+    }
+
+    /* Table wrapper for horizontal scroll on small screens */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    @media (max-width: 768px) {
+      .top-bar .container { justify-content: center; flex-wrap: wrap; gap: 10px; }
+      .hero { padding: 70px 0 60px; }
+      .hero h1 { font-size: 2rem; }
+      .hero .tagline { font-size: 1.1rem; }
+      .hero p { font-size: 1rem; }
+      section { padding: 50px 0; }
+      .section-header h2 { font-size: 1.7rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .stat-item .number { font-size: 1.8rem; }
+      .news-grid { grid-template-columns: 1fr; }
+      .academics-grid, .admission-grid, .research-stats, .innovation-stats { grid-template-columns: 1fr; }
+      .labs-list { grid-template-columns: 1fr; }
+      .quick-links { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      nav .container { flex-wrap: wrap; }
+      .menu-toggle { display: block; }
+      nav ul {
+        display: none; flex-direction: column; width: 100%;
+        gap: 0; padding: 10px 0;
+      }
+      nav ul.open { display: flex; }
+      nav ul li a {
+        display: block; padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero { padding: 50px 0 40px; }
+      .hero h1 { font-size: 1.6rem; }
+      .hero .tagline { font-size: 1rem; }
+      .hero .btn { padding: 12px 28px; font-size: 0.9rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat-item .number { font-size: 1.5rem; }
+      .quick-links { grid-template-columns: 1fr; }
+      .section-header h2 { font-size: 1.4rem; }
+      .section-header p { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <a href="#students">Students</a>
+      <a href="#faculty">Faculty & Staff</a>
+      <a href="#alumni">Alumni</a>
+      <a href="#parents">Parents</a>
+      <a href="#giving">Give</a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="index.html" class="logo">Galactic Institute of <span>Technology</span></a>
+      <button class="menu-toggle" aria-label="Menu">☰</button>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#academics">Academics</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#innovation">Innovation</a></li>
+        <li><a href="#admission">Admission</a></li>
+        <li><a href="#news">News</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <img src="gal-ins-tec-trans_home.png" alt="Galactic Institute of Technology Crest" style="width:180px; height:auto; margin-bottom:24px; border-radius:8px;">
+      <h1>Galactic Institute of Technology</h1>
+      <div class="tagline">Ex Fabris, Pro Fabris — From Builders, For Builders</div>
+      <p>Learning comes in many forms, not tied to traditional institutions. At GIT, we embrace this truth — building a community of makers, mentors, and innovators united by relentless curiosity, cross-disciplinary collaboration, and the freedom to create, improve, and help others do the same.</p>
+      <a href="https://github.com/toddvarland/galatic-inst-tech/discussions" class="btn">GIT Community</a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:30px;">
+        <h2 style="color:var(--white);">Aspirations</h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="number">#1</div>
+          <div class="label">Robotics Self-Study Program</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">200+</div>
+          <div class="label">Faculty Across 8 Schools</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">50+</div>
+          <div class="label">Research Labs & Centers</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">$2.1B</div>
+          <div class="label">Annual Research Expenditure</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">15:1</div>
+          <div class="label">Student-to-Faculty Ratio</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">97%</div>
+          <div class="label">Graduate Employment Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">500+</div>
+          <div class="label">Industry Partners</div>
+        </div>
+        <div class="stat-item">
+          <div class="number">120+</div>
+          <div class="label">Startups from GIT Research</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- News -->
+  <section id="news">
+    <div class="container">
+      <div class="section-header">
+        <h2>Campus News</h2>
+        <p>Stories about people, research, and innovation across the Cosmos Quad</p>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <h3>Autonomous Swarm Breaks Distance Record</h3>
+          <p>GIT's Multi-Robot Systems Lab demonstrates 500-drone cooperative mapping in unstructured terrain, setting a new benchmark for distributed robotics.</p>
+        </div>
+        <div class="news-card">
+          <h3>GIT Student Team Wins DARPA SubT Challenge</h3>
+          <p>Undergraduate and graduate students deploy a fleet of legged and aerial robots to navigate subterranean environments autonomously.</p>
+        </div>
+        <div class="news-card">
+          <h3>New Humanoid Lab Opens</h3>
+          <p>A 40,000 sq ft facility dedicated to whole-body humanoid manipulation, locomotion, and human-robot interaction begins operations.</p>
+        </div>
+        <div class="news-card">
+          <h3>Foundation Model for Manipulation</h3>
+          <p>Researchers at GARL release an open-source vision-language-action model trained on 10M+ robotic grasping episodes.</p>
+        </div>
+        <div class="news-card">
+          <h3>No. 1 in Federally Sponsored Robotics Research</h3>
+          <p>The National Science Foundation's annual survey places GIT first among U.S. universities in robotics-specific research expenditures.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academics -->
+  <section id="academics">
+    <div class="container">
+      <div class="section-header">
+        <h2>Academics</h2>
+        <p>Preparing the next generation of roboticists, engineers, and innovators to solve the world's most pressing challenges</p>
+      </div>
+      <div class="academics-grid">
+        <div class="academic-card">
+          <h3>Undergraduate Education</h3>
+          <p>A rigorous foundation in mathematics, computer science, and engineering — paired with hands-on robotics from day one. Every undergraduate builds, programs, and tests a real robotic system before graduation.</p>
+        </div>
+        <div class="academic-card">
+          <h3>Graduate Education</h3>
+          <p>Unparalleled M.S. and Ph.D. programs in Robotics, with deep specialization tracks spanning autonomous systems, medical robotics, robot learning, and multi-robot coordination.</p>
+        </div>
+        <div class="academic-card">
+          <h3>Lifelong Learning</h3>
+          <p>Continuing education, executive programs, and professional certificates for working engineers — including our acclaimed Online Robotics MicroMasters.</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.3rem; color:var(--primary); margin-bottom:16px;">Eight Schools</h3>
+      <div class="table-wrap">
+      <table class="schools-table">
+        <thead>
+          <tr><th>School</th><th>Focus</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>School of Robotics & Autonomous Systems</td><td>The flagship — dedicated B.S., M.S., and Ph.D. in Robotics</td></tr>
+          <tr><td>School of Engineering</td><td>Mechanical, electrical, aerospace, and biomedical engineering</td></tr>
+          <tr><td>School of Computing & AI</td><td>Computer science, artificial intelligence, and machine learning</td></tr>
+          <tr><td>School of Sciences</td><td>Mathematics, physics, chemistry, and biology</td></tr>
+          <tr><td>School of Design & Manufacturing</td><td>Industrial design, advanced manufacturing, and computational fabrication</td></tr>
+          <tr><td>School of Medicine & Biorobotics</td><td>Surgical robotics, rehabilitation engineering, and neural interfaces</td></tr>
+          <tr><td>School of Policy & Ethics</td><td>Technology policy, responsible AI, and the societal impact of automation</td></tr>
+          <tr><td>School of Business & Innovation</td><td>Entrepreneurship, technology ventures, and robotics industry leadership</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+  <section id="research">
+    <div class="container">
+      <div class="section-header">
+        <h2>Research</h2>
+        <p>Driving discoveries that advance robotics, intelligence, and the human condition</p>
+      </div>
+      <div class="research-stats">
+        <div class="research-stat">
+          <div class="number">50+</div>
+          <div class="label">Research Centers & Labs</div>
+        </div>
+        <div class="research-stat">
+          <div class="number">$2.1B</div>
+          <div class="label">Annual Research Funding</div>
+        </div>
+        <div class="research-stat">
+          <div class="number">3,200+</div>
+          <div class="label">Peer-Reviewed Publications / Year</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.3rem; color:var(--primary); margin-bottom:20px;">Flagship Research Institutes</h3>
+      <div class="labs-list">
+        <div class="lab-card">
+          <h4>Galactic AI & Robotics Laboratory (GARL)</h4>
+          <p>Our cornerstone lab integrating perception, planning, learning, and control into complete robotic systems.</p>
+        </div>
+        <div class="lab-card">
+          <h4>Institute for Autonomous Systems (IAS)</h4>
+          <p>Autonomous vehicles, aerial robotics, marine robots, and space exploration systems. Flight testing, simulation, and field deployment under one roof.</p>
+        </div>
+        <div class="lab-card">
+          <h4>Center for Medical & Surgical Robotics (CMSR)</h4>
+          <p>Developing next-generation surgical systems, rehabilitation robots, and biomedical devices in partnership with the GIT Medical Center.</p>
+        </div>
+        <div class="lab-card">
+          <h4>Human-Robot Interaction Lab (HRIL)</h4>
+          <p>Shared autonomy, social robotics, assistive technology, and the psychology of human-machine collaboration.</p>
+        </div>
+        <div class="lab-card">
+          <h4>Multi-Robot Systems & Swarm Intelligence Center</h4>
+          <p>Coordination, communication, and distributed decision-making for teams of hundreds to thousands of robots.</p>
+        </div>
+        <div class="lab-card">
+          <h4>Soft Robotics & Bio-Inspired Design Lab</h4>
+          <p>Continuum robots, pneumatic actuators, compliant mechanisms, and locomotion inspired by nature.</p>
+        </div>
+        <div class="lab-card">
+          <h4>Advanced Manufacturing & Computational Design Center</h4>
+          <p>Topology optimization, generative design, 3D/4D printing, and digital twin technologies for robotic systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Innovation -->
+  <section id="innovation">
+    <div class="container">
+      <div class="section-header">
+        <h2>Innovation & Industry</h2>
+        <p>Translating breakthrough research into real-world impact</p>
+      </div>
+      <div class="innovation-stats">
+        <div class="innovation-stat">
+          <div class="number">120+</div>
+          <div class="label">Startups Founded</div>
+        </div>
+        <div class="innovation-stat">
+          <div class="number">$48B</div>
+          <div class="label">Combined Market Value</div>
+        </div>
+        <div class="innovation-stat">
+          <div class="number">85,000+</div>
+          <div class="label">Jobs Created by GIT Companies</div>
+        </div>
+      </div>
+      <p style="max-width:800px; margin:0 auto; text-align:center; color:var(--text-light); font-size:1rem; line-height:1.7;">GIT has been at the forefront of robotics innovation since our founding. From pioneering autonomous navigation algorithms to launching companies that manufacture collaborative robots used in factories worldwide — our research doesn't stay in the lab. The <strong>GIT Ventures</strong> accelerator and <strong>Robotics Foundry</strong> provide funding, mentorship, and prototyping facilities to student and faculty entrepreneurs.</p>
+    </div>
+  </section>
+
+  <!-- Athletics -->
+  <section>
+    <div class="container" style="text-align:center; max-width:700px;">
+      <div class="section-header">
+        <h2>Athletics</h2>
+        <p>Providing student-athletes the opportunity to achieve excellence in competition and in the classroom</p>
+      </div>
+      <p style="color:var(--text-light); font-size:1rem;">The <strong>GIT Novas</strong> compete in 22 varsity sports and have a proud tradition of athletic achievement. Our student-athletes embody the same discipline, teamwork, and drive for excellence that defines GIT's academic culture.</p>
+    </div>
+  </section>
+
+  <!-- Admission -->
+  <section id="admission">
+    <div class="container">
+      <div class="section-header">
+        <h2>Admission</h2>
+        <p>Your journey starts here</p>
+      </div>
+      <div class="admission-grid">
+        <div class="admission-card">
+          <h3>Undergraduate</h3>
+          <p>We admit students who demonstrate excellence in mathematics and science, a passion for hands-on engineering, and the creativity to imagine new possibilities.</p>
+          <a href="#apply-undergrad" class="btn-outline">Apply Now</a>
+        </div>
+        <div class="admission-card">
+          <h3>Graduate</h3>
+          <p>Our M.S. and Ph.D. programs in Robotics attract the world's most talented engineers and scientists. We evaluate research potential, technical depth, and faculty alignment.</p>
+          <a href="#apply-grad" class="btn-outline">Explore Programs</a>
+        </div>
+        <div class="admission-card">
+          <h3>Financial Aid</h3>
+          <p>GIT meets the full demonstrated financial need of every admitted undergraduate. Over 70% of students receive assistance; families under $150K generally pay no tuition.</p>
+          <a href="#finaid" class="btn-outline">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <h2>Upcoming Events</h2>
+      </div>
+      <div class="table-wrap">
+      <table class="events-table">
+        <thead>
+          <tr><th>Date</th><th>Event</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mar 5</td><td><strong>GIT Robotics Symposium</strong> — Annual showcase of student and faculty research with live robot demonstrations</td></tr>
+          <tr><td>Mar 12</td><td><strong>Distinguished Lecture: The Future of Embodied AI</strong> — Keynote by Dr. Anika Patel, GIT Professor of Robot Learning</td></tr>
+          <tr><td>Mar 20</td><td><strong>Robotics Career Fair</strong> — 100+ companies recruiting GIT students for internships and full-time roles</td></tr>
+          <tr><td>Apr 2</td><td><strong>Spring Open House</strong> — Campus tours, lab visits, and info sessions for admitted students and families</td></tr>
+          <tr><td>Apr 15</td><td><strong>RoboHack 2026</strong> — 48-hour hackathon where student teams build and program robots to solve real-world challenges</td></tr>
+          <tr><td>May 8</td><td><strong>Commencement</strong> — Celebrating the Class of 2026</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <h2>Quick Links</h2>
+      </div>
+      <div class="quick-links">
+        <div class="ql-group">
+          <h4>Prospective Students</h4>
+          <ul>
+            <li><a href="#admissions">Admissions</a></li>
+            <li><a href="#tours">Campus Tours</a></li>
+            <li><a href="#finaid">Financial Aid</a></li>
+            <li><a href="#programs">Majors & Programs</a></li>
+          </ul>
+        </div>
+        <div class="ql-group">
+          <h4>Current Students</h4>
+          <ul>
+            <li><a href="#calendar">Academic Calendar</a></li>
+            <li><a href="#catalog">Course Catalog</a></li>
+            <li><a href="#library">Library</a></li>
+            <li><a href="#careers">Career Center</a></li>
+          </ul>
+        </div>
+        <div class="ql-group">
+          <h4>Faculty & Staff</h4>
+          <ul>
+            <li><a href="#directory">Directory</a></li>
+            <li><a href="#research-portal">Research Portal</a></li>
+            <li><a href="#hr">HR & Benefits</a></li>
+            <li><a href="#hiring">Faculty Hiring</a></li>
+          </ul>
+        </div>
+        <div class="ql-group">
+          <h4>Alumni</h4>
+          <ul>
+            <li><a href="#alumni">Alumni Network</a></li>
+            <li><a href="#giving">Giving</a></li>
+            <li><a href="#continuing-ed">Continuing Education</a></li>
+            <li><a href="#alumni-events">Events</a></li>
+          </ul>
+        </div>
+        <div class="ql-group">
+          <h4>Industry Partners</h4>
+          <ul>
+            <li><a href="#corporate">Corporate Engagement</a></li>
+            <li><a href="#licensing">Licensing & IP</a></li>
+            <li><a href="#ventures">GIT Ventures</a></li>
+            <li><a href="#sponsor">Sponsor Research</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Galactic Institute of Technology</h4>
+          <p>1 Nova Avenue<br>Galactic City, GC 00001</p>
+          <p style="margin-top:8px;">(000) 555-ROBO &nbsp;|&nbsp; <a href="mailto:info@git.edu">info@git.edu</a></p>
+          <div class="footer-social">
+            <a href="#" title="Facebook">f</a>
+            <a href="#" title="Instagram">in</a>
+            <a href="#" title="X / Twitter">X</a>
+            <a href="#" title="LinkedIn">Li</a>
+            <a href="#" title="YouTube">YT</a>
+            <a href="#" title="GitHub">GH</a>
+          </div>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <p><a href="#about">About GIT</a></p>
+          <p><a href="#academics">Academics</a></p>
+          <p><a href="#research">Research</a></p>
+          <p><a href="#innovation">Innovation</a></p>
+          <p><a href="#admission">Admission</a></p>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <p><a href="#map">Campus Map</a></p>
+          <p><a href="#directory">Directory</a></p>
+          <p><a href="#jobs">Careers at GIT</a></p>
+          <p><a href="#visit">Visit</a></p>
+          <p><a href="#contact">Contact</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Galactic Institute of Technology. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#accessibility">Accessibility</a>
+          <a href="#nondiscrimination">Non-Discrimination</a>
+          <a href="#titleix">Title IX</a>
+          <a href="#accreditation">Accreditation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // Service Worker registration
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
+  // Hamburger menu toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('.menu-toggle');
+    const navUl = document.querySelector('nav ul');
+    if (toggle && navUl) {
+      toggle.addEventListener('click', () => {
+        navUl.classList.toggle('open');
+        toggle.textContent = navUl.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  });
+</script>
+</body>
+</html>
